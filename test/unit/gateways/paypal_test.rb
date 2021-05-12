@@ -634,6 +634,14 @@ class PaypalTest < Test::Unit::TestCase
     end.respond_with(successful_purchase_response)
   end
 
+  def test_correlation_id_request
+    stub_comms do
+      @gateway.purchase(@amount, @credit_card, @options.merge({correlation_id: 'fee61882e6f47' }))
+    end.check_request do |_endpoint, data, _headers|
+      assert_match %r{<n2:RiskSessionCorrelationID>fee61882e6f47</n2:RiskSessionCorrelationID>}, data
+    end.respond_with(successful_purchase_response)
+  end
+
   private
 
   def pre_scrubbed

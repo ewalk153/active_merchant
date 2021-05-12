@@ -66,6 +66,7 @@ module ActiveMerchant #:nodoc:
               add_payment_details(xml, money, currency_code, options)
               add_credit_card(xml, credit_card_or_referenced_id, billing_address, options) unless transaction_type == 'DoReferenceTransaction'
               xml.tag! 'n2:IPAddress', options[:ip]
+              xml.tag! 'n2:RiskSessionCorrelationID', options[:correlation_id] unless options[:correlation_id].blank?
             end
           end
         end
